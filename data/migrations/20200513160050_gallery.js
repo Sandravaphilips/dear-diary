@@ -4,8 +4,7 @@ exports.up = function(knex) {
         table.increments();
         table.string('picture');
         table.date('date').notNullable();
-        table.integer('userId').unsigned().notNullable().references('id').inTable('users').onUpdate('CASCADE').onDelete('CASCADE');
-        table.integer('diaryId').unsigned().notNullable().references('id').inTable('diary').onUpdate('CASCADE').onDelete('CASCADE');
+        table.integer('userId').unsigned().notNullable().references('id').inTable('users').onUpdate('CASCADE').onDelete('CASCADE');        
     });
 };
 
