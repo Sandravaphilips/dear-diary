@@ -25,7 +25,6 @@ module.exports = {
     findPictureBy: function(filter) {
         return db('gallery')
             .where(filter)
-            .first()
     },
     addDiaryText: function(text) {
         return db('diary')
