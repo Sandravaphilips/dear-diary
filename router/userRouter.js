@@ -32,3 +32,24 @@ router.post('/gallery', validateBody, async(req, res) => {
         res.status(500).json({ message: variables.errorMessage, error: error.message })
     }
 })
+
+router.get('/gallery', async(req, res) => {
+    try {
+        const picture = await db.findPictureBy({userId: req.decodedToken.subject });
+        res.status(201).json({ picture })
+    }
+    catch (error) {
+        res.status(500).json({ message: variables.errorMessage, error: error.message })
+    }
+})
+
+router.get('/diary/:id', async(req, res) => {
+    try {
+        const id = req.params.id;
+        const diary = await db.findTextBy({ id });
+        res.status(201).json({ diary })
+    }
+    catch (error) {
+        res.status(500).json({ message: variables.errorMessage, error: error.message })
+    }
+})
