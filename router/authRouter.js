@@ -13,14 +13,14 @@ router.post('/register', async (req, res) => {
         const user = await db.addUser(req.body);
         const token = await getToken(user);
         delete user.password;
-        res.status(201).json({ message: regWelcome(user.firstName), token, user })
+        res.status(201).json({ message: regWelcome(user.username), token, user })
     }
     catch (error) {
         res.status(500).json({ message: errorMessage, error: error.message });
     }
 });
 
-router.post('/login', (req, res) => {
+router.post('/login', async(req, res) => {
     try {
         const token = getToken(req.user);
         const user = req.user;
