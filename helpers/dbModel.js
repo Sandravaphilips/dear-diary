@@ -26,6 +26,11 @@ module.exports = {
         return db('gallery')
             .where(filter)
     },
+    removePicture: function (id) {
+        return db('gallery')
+            .where({ id })
+            .delete()
+    },
     addDiaryText: function(text) {
         return db('diary')
             .insert(text)
@@ -39,4 +44,12 @@ module.exports = {
             .where(filter)
             .first()
     },
+    updateDiaryText: function(id, changes) {
+        return db('diary')
+            .where({ id })
+            .update(changes)
+            .then(() => {
+                return this.findTextBy({ id })
+            })
+    }
 }
