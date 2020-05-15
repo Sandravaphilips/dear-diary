@@ -15,8 +15,8 @@ module.exports = {
     },
 
     validateEmail: function (req, res, next) {
-        const { email } = req.body;
-        if (variables.mailRegex.test(email)) {
+        const { emailAddress } = req.body;
+        if (variables.mailRegex.test(emailAddress)) {
             next();
         } else {
             res.status(400).json({ message: variables.invalidEmail });
@@ -24,11 +24,11 @@ module.exports = {
     },
 
     validateUser: async function (req, res, next) {
-        const { username, email, password } = req.body;
-        const user = email !== undefined ? await Users.findUserBy({ email }).first() : undefined;
-        if (username && email && password && req.path === "/register") {
+        const { username, emailAddress, password } = req.body;
+        const user = emailAddress !== undefined ? await Users.findUserBy({ emailAddress }).first() : undefined;
+        if (username && emailAddress && password && req.path === "/register") {
             (user === undefined) ? next() : res.status(403).json({ message: variables.alreadyInUse });
-        } else if (email && password && req.path === "/login") {
+        } else if (emailAddress && password && req.path === "/login") {
             req.user = user;
             (user && bcrypt.compareSync(password, user.password)) ? next() : res.status(401).json({ message: variables.invalid });
         } else {
