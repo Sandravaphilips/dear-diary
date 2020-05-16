@@ -11,6 +11,6 @@ module.exports = {
         const options = {
             expiresIn: '5h'
         };
-        return jwt.sign(payload, this.secret, options)
+        return jwt.sign(payload, 'hjvf61098IHIH980', options)
     }
 }
