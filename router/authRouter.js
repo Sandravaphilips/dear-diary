@@ -25,7 +25,7 @@ router.post('/login', async(req, res) => {
         const token = getToken(req.user);
         const user = req.user;
         delete user.password;
-        res.status(200).json({ message: loginWelcome(user.firstName), token, user })
+        res.status(200).json({ message: loginWelcome(user.username), token, user })
     }
     catch (error) {
         res.status(500).json({ message: errorMessage, error: error.message });
