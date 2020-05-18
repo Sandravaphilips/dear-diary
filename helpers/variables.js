@@ -17,6 +17,7 @@ module.exports = {
    invalidEmail: 'Not a valid email address format',
    newEntry: 'New entry successfully created!',
    updatedEntry: 'Entry successfully updated!',
+   choosePhoto: 'Please choose a photo to upload',
    pictureRemoved: function (value) {
       return `${value} has been successfully deleted`
 },
