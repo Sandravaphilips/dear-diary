@@ -14,6 +14,14 @@ module.exports = {
         }
     },
 
+    validatePicture: function (req, res, next) {
+        if (req.files !== undefined) {
+            next();
+        } else {
+            res.status(400).json({ message: variables.choosePhoto });
+        }
+    },
+
     validateEmail: function (req, res, next) {
         const { emailAddress } = req.body;
         if (variables.mailRegex.test(emailAddress)) {
