@@ -3,6 +3,7 @@ const helmet = require('helmet');
 const cors = require('cors');
 
 const server = express();
+const port = process.env.PORT || 5000;
 
 const authRouter = require('./router/authRouter');
 const userRouter = require('./router/userRouter');
@@ -19,6 +20,6 @@ server.get('/', (req, res) => {
   res.send('Hello from Dear Diary');
 });
 
-server.listen(5000, () =>
-  console.log('Server running on http://localhost:5000')
+server.listen(port, () =>
+  console.log(`Server running on http://localhost:${port}`)
 );
