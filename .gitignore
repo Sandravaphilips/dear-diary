@@ -1,3 +1,4 @@
 node_modules
 diary.db3
 tmp
+.env
