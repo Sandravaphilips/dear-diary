@@ -13,7 +13,7 @@ const Login = props => {
         axios.post('https://my-dear-diary.herokuapp.com/api/auth/login', payload)
         .then(response => {
             localStorage.setItem("token", response.data.token);            
-            props.history.push('/diary');
+            props.history.push('/dashboard');
         })
         .catch(error => {
             alert(error);
