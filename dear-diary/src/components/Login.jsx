@@ -1,16 +1,27 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { TextField, Button } from '@material-ui/core';
 
+const initialFormValues = {
+    emailAddress: '',
+    password: ''
+};
+
 const Login = props => {
+    const [formValues, setFormValues] = useState(initialFormValues);
+
+    const onEmailChange = e => {
+        setFormValues({...formValues, emailAddress: e.target.value});
+    }
+
+    const onPasswordChange = e => {
+        setFormValues({...formValues, password: e.target.value});
+    }
+
     const onHandleSubmit = e => {
         e.preventDefault()
-        const payload = {
-            emailAddress: e.target.email,
-            password: e.target.password
-        }
-        axios.post('https://my-dear-diary.herokuapp.com/api/auth/login', payload)
+        axios.post('https://my-dear-diary.herokuapp.com/api/auth/login', formValues)
         .then(response => {
             localStorage.setItem("token", response.data.token);            
             props.history.push('/dashboard');
@@ -22,14 +33,15 @@ const Login = props => {
     return(
         <div>
             <form>
-                <TextField required id="email" label="Email Address" defaultValue="johnsmith@gmail.com" />                
+                <TextField required id="email" label="Email Address" placeholder="johnsmith@gmail.com" onChange={onEmailChange} />                
                 <TextField
                     required
                     id="password"
                     label="Password"
                     type="password"
                     autoComplete="current-password"
-                    defaultValue='#2password@'
+                    placeholder='#2password@'
+                    onChange={onPasswordChange}
                 /> 
                 <Button onClick={onHandleSubmit} variant="contained" color="primary">
                     Submit
