@@ -3,7 +3,9 @@ import { TextField, Button, Modal } from '@material-ui/core';
 import withAuth from '../axios';
 
 const Diary = props => {
-    const [photo, setPhoto] = useState(null)
+    const [photo, setPhoto] = useState(null);
+    const [open, setOpen] = useState(false);
+
     const handleOpen = () => {
         setOpen(true);
     };
@@ -26,7 +28,7 @@ const Diary = props => {
     }
     const onHandleSubmit = e => {
         e.preventDefault()
-        d = Date.now();
+        const d = Date.now();
         const payload = {
             diaryText: e.target.value,
             userId: props.match.params.id,
