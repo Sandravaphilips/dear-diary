@@ -17,7 +17,7 @@ const SignUp = props => {
             axios.post('https://my-dear-diary.herokuapp.com/api/auth/register', payload)
             .then(response => {
                 localStorage.setItem("token", response.data.token);            
-                props.history.push('/diary');
+                props.history.push('/login');
             })
             .catch(error => {
                 alert(error);
