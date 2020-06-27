@@ -4,7 +4,11 @@ import { Button } from '@material-ui/core';
 const Dashboard = props => {
     const onHandleSubmit = e => {
         e.preventDefault()
-        props.history.push('/diary')
+        let d = Date.now();
+        d = new Date(d);
+        d = d.toLocaleDateString();
+        d = d.replace(/\//g, '-')
+        props.history.push(`/diary/${d}`)
     };
 
     const onCalendarSubmit = e => {
@@ -14,7 +18,7 @@ const Dashboard = props => {
 
     return(
         <div>
-            <h3>Welcome back,</h3>
+            <h3>Welcome</h3>
             <h4>Are you ready to tell me about your day?</h4>
             <Button onClick={onHandleSubmit} variant="contained" color="primary">
                 Let's Go
