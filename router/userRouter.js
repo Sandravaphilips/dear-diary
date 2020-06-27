@@ -44,10 +44,10 @@ router.get('/gallery/:date', async(req, res) => {
     }
 })
 
-router.get('/diary/:id', async(req, res) => {
+router.get('/diary/:date', async(req, res) => {
     try {
-        const id = req.params.id;
-        const diary = await db.findTextBy({ id });
+        const date = req.params.date;
+        const diary = await db.findTextBy({ userId: req.decodedToken.subject, date });
         res.status(201).json({ diary })
     }
     catch (error) {
