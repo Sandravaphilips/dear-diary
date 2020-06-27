@@ -1,10 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { TextField, Button, Modal } from '@material-ui/core';
 import withAuth from '../axios';
 
 const Diary = props => {
     const [photo, setPhoto] = useState(null);
     const [open, setOpen] = useState(false);
+    const [diary, setDiary] = useState(null);
+    
+    const date = props.match.params.date;
+
+    useEffect(() => {
+        withAuth().get(`https://my-dear-diary.herokuapp.com/api/diary/${date}`)
+        .then(res => setDiary(res.data))
+        .catch(err => alert(err))
+    }, [date])
 
     const handleOpen = () => {
         setOpen(true);
@@ -40,13 +49,13 @@ const Diary = props => {
             alert(error);
         });                
     }
-
+    
     return(
         <div>
             <Button onClick={handleOpen} variant="contained" color="primary">
                 Upload Picture
             </Button>
-            <TextField id="diary-text" defaultValue="Today was good day..." variant="outlined" />
+            <TextField id="diary-text" defaultValue={diary ? diary.diaryText : ''} variant="outlined" />
             <Button onClick={onHandleSubmit} variant="contained" color="primary">
                 Done
             </Button>
@@ -55,14 +64,16 @@ const Diary = props => {
                 open={open}
                 onClose={handleClose}
             >
-                <h3>Upload your picture</h3>
-                <input type="file" name="Upload" onChange={onChange} />
-                <Button variant="contained" onClick={onUpload} color="primary">
-                  Save
-                </Button>
-                <Button variant="contained" onClick={handleClose} color="primary">
-                  Cancel
-                </Button>
+                <div>
+                    <h3>Upload your picture</h3>
+                    <input type="file" name="Upload" onChange={onChange} />
+                    <Button variant="contained" onClick={onUpload} color="primary">
+                    Save
+                    </Button>
+                    <Button variant="contained" onClick={handleClose} color="primary">
+                    Cancel
+                    </Button>
+                </div>
             </Modal>
         </div>
     )
