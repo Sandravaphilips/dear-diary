@@ -9,7 +9,7 @@ const DiaryCalendar = props => {
         setDate(date)
     }
     
-    const onDayClick = () => {
+    const onDayClick = date => {
         let newDate = date.toLocaleDateString()        
         newDate = newDate.replace(/\//g, '-')
         props.history.push(`/diary/${newDate}`)

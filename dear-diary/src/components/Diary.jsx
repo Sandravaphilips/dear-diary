@@ -5,15 +5,29 @@ import withAuth from '../axios';
 const Diary = props => {
     const [photo, setPhoto] = useState(null);
     const [open, setOpen] = useState(false);
-    const [diary, setDiary] = useState(null);
+    const [diary, setDiary] = useState({
+        diaryText: ''
+    });
+    const [isLoading, setIsLoading] = useState(true);
+    const [results, setResults] = useState(false);
     
     const date = props.match.params.date;
 
     useEffect(() => {
         withAuth().get(`https://my-dear-diary.herokuapp.com/api/diary/${date}`)
-        .then(res => setDiary(res.data))
+        .then(({data}) => {
+            setDiary(data.diary)
+            setIsLoading(false)
+            if(data.diary) {
+                setResults(true)
+            }
+        })
         .catch(err => alert(err))
     }, [date])
+    
+    const onDiaryTextChange = e => {
+        setDiary({...diary, diaryText: e.target.value})
+    }
 
     const handleOpen = () => {
         setOpen(true);
@@ -29,7 +43,7 @@ const Diary = props => {
     };
 
     const onUpload = () => {
-        withAuth.post('https://my-dear-diary.herokuapp.com/api/gallery', photo)
+        withAuth().post('https://my-dear-diary.herokuapp.com/api/gallery', photo)
         .then(res => alert(res.data.message))
         .catch(error => {
             alert(error);
@@ -37,25 +51,41 @@ const Diary = props => {
     }
     const onHandleSubmit = e => {
         e.preventDefault()
-        const d = Date.now();
-        const payload = {
-            diaryText: e.target.value,
-            userId: props.match.params.id,
-            date: d.toLocaleDateString()
-        }
-        withAuth.post('https://my-dear-diary.herokuapp.com/api/diary', payload)
-        .then(() => props.history.push('/'))
-        .catch(error => {
-            alert(error);
-        });                
+        if(results) {
+            const payload = {
+                diaryText: diary.diaryText,
+            }
+            withAuth().put(`https://my-dear-diary.herokuapp.com/api/diary/${diary.id}`, payload)
+            .then(res => {
+                console.log(res)
+                props.history.push('/dashboard')
+            })
+            .catch(error => {
+                alert(error);
+            }); 
+        } else {
+            const payload = {
+                diaryText: diary.diaryText,
+                date: date
+            }
+            withAuth().post('https://my-dear-diary.herokuapp.com/api/diary', payload)
+            .then(res => {
+                console.log(res)
+                props.history.push('/dashboard')
+            })
+            .catch(error => {
+                alert(error);
+            }); 
+        }              
     }
     
+    if(isLoading) return <div>Loading...</div> 
     return(
         <div>
             <Button onClick={handleOpen} variant="contained" color="primary">
                 Upload Picture
             </Button>
-            <TextField id="diary-text" defaultValue={diary ? diary.diaryText : ''} variant="outlined" />
+            <TextField id="diary-text" onChange={onDiaryTextChange} defaultValue={diary ? diary.diaryText : ''} variant="outlined" />
             <Button onClick={onHandleSubmit} variant="contained" color="primary">
                 Done
             </Button>
