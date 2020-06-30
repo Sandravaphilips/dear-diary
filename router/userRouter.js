@@ -2,7 +2,7 @@ const router = require('express').Router();
 const fileUpload = require('express-fileupload');
 const db = require('../helpers/dbModel');
 const variables = require('../helpers/variables');
-const { validateBody, validatePicture } = require('../helpers/middleware');
+const { validateBody, validatePicture, requestHeaders } = require('../helpers/middleware');
 const cloudinary = require('../config/clConfig');
 
 router.use(fileUpload({
@@ -20,7 +20,7 @@ router.post('/diary', validateBody, async(req, res) => {
     }
 })
 
-router.post('/gallery', validatePicture, async(req, res) => {
+router.post('/gallery', validatePicture, requestHeaders, async(req, res) => {
     try {
         const file = req.files.photo;
         cloudinary.uploader.upload(file.tempFilePath, {upload_preset: 'dear_diary'}, async (err, result) => {
