@@ -23,7 +23,7 @@ router.post('/diary', validateBody, async(req, res) => {
 router.post('/gallery', validatePicture, async(req, res) => {
     try {
         const file = req.files.photo;
-        cloudinary.uploader.upload(file.tempFilePath, async (err, result) => {
+        cloudinary.uploader.upload(file.tempFilePath, {upload_preset: 'dear-diary'}, async (err, result) => {
             const newPicture = await db.addPicture({ date: result.created_at.substring(0, 10), picture: result.url, userId: req.decodedToken.subject });
             res.status(201).json({ message: variables.newEntry, newPicture })
         })        
