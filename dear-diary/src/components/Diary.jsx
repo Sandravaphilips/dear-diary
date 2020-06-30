@@ -43,7 +43,7 @@ const Diary = props => {
     };
 
     const onUpload = () => {
-        withAuth.post('https://my-dear-diary.herokuapp.com/api/gallery', photo)
+        withAuth().post('https://my-dear-diary.herokuapp.com/api/gallery', photo)
         .then(res => alert(res.data.message))
         .catch(error => {
             alert(error);
@@ -85,7 +85,7 @@ const Diary = props => {
             <Button onClick={handleOpen} variant="contained" color="primary">
                 Upload Picture
             </Button>
-            <TextField id="diary-text" onChange={onDiaryTextChange} defaultValue={diary.diaryText ? diary.diaryText : ''} variant="outlined" />
+            <TextField id="diary-text" onChange={onDiaryTextChange} defaultValue={diary ? diary.diaryText : ''} variant="outlined" />
             <Button onClick={onHandleSubmit} variant="contained" color="primary">
                 Done
             </Button>
