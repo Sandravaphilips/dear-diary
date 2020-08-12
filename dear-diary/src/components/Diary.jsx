@@ -90,7 +90,7 @@ const Diary = props => {
                 Done
             </Button>
 
-            <Modal
+            {/* <Modal
                 open={open}
                 onClose={handleClose}
             >
@@ -104,7 +104,7 @@ const Diary = props => {
                     Cancel
                     </Button>
                 </div>
-            </Modal>
+            </Modal> */}
         </div>
     )
 };
