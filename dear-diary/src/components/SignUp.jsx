@@ -3,6 +3,9 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { TextField, Button } from '@material-ui/core';
 
+import logo from './assets/logo.svg';
+import { SignUpStyle } from './style';
+
 const initialFormValues = {
     emailAddress: '',
     password: '',
@@ -46,45 +49,51 @@ const SignUp = props => {
     }
 
     return(
-        <div>
-            <form>
-                <TextField
-                    onChange={onUsernameChange} 
-                    required 
-                    id="username" 
-                    label="Username" 
-                    placeholder="JohnSmith" 
-                />
-                <TextField 
-                    onChange={onEmailChange}
-                    required 
-                    id="email" 
-                    label="Email Address" 
-                    placeholder="johnsmith@gmail.com" 
-                />                
-                <TextField
-                    onChange={onPasswordChange}
-                    required
-                    id="password"
-                    label="Password"
-                    type="password"
-                    placeholder='#2password@'
-                /> 
-                <TextField
-                    onChange={onConfirmPasswordChange}
-                    required
-                    id="confirmPassword"
-                    label="Confirm Password"
-                    type="password"
-                    placeholder='#2password@'
-                />
-                <Button onClick={onHandleSubmit} variant="contained" color="primary">
-                    Submit
-                </Button>
+        <SignUpStyle>
+            <figure>
+                <img src={logo} alt='app-logo' />
+            </figure>
+            <div className='form-group'>
+                <h1>Sign Up</h1>
+                <form className='form-content'>
+                    <TextField
+                        onChange={onUsernameChange} 
+                        required 
+                        id="username" 
+                        label="Username" 
+                        placeholder="JohnSmith" 
+                    />
+                    <TextField 
+                        onChange={onEmailChange}
+                        required 
+                        id="email" 
+                        label="Email Address" 
+                        placeholder="johnsmith@gmail.com" 
+                    />                
+                    <TextField
+                        onChange={onPasswordChange}
+                        required
+                        id="password"
+                        label="Password"
+                        type="password"
+                        placeholder='#2password@'
+                    /> 
+                    <TextField
+                        onChange={onConfirmPasswordChange}
+                        required
+                        id="confirmPassword"
+                        label="Confirm Password"
+                        type="password"
+                        placeholder='#2password@'
+                    />
+                    <Button onClick={onHandleSubmit} variant="contained" color="primary">
+                        Sign Up
+                    </Button>
 
-                <p>Already have an account? <Link to='/login'>Log In</Link></p> 
-            </form>
-        </div>
+                    <p>Already have an account? <Link to='/'>Log In</Link></p> 
+                </form>
+            </div>
+        </SignUpStyle>
     )
 };
 
