@@ -205,3 +205,31 @@ export const SignUpStyle = styled.div`
         }
     }
 `;
+
+export const DashboardStyle = styled.div`
+
+`;
+
+export const NavigationStyle = styled.div`
+    .MuiAppBar-root {
+        background: #38b6ff;
+    }
+    figure {
+        height: 2rem;
+        width: 6rem;
+        overflow: hidden;
+        margin: 0;
+        margin-top: 5px;
+        margin-right: auto;
+
+        img {
+            width: 100%;
+            height: 100%;
+            transform: scale(3);
+        }
+    }
+`;
+
+export const MenuStyle = styled.div`
+
+`;
