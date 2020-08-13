@@ -16,7 +16,7 @@ const DiaryCalendar = props => {
     }
     
     return(
-        <div>
+        <div className='calendar'>
             <Calendar
                 onChange={onChange}
                 value={date}

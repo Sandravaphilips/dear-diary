@@ -205,3 +205,146 @@ export const SignUpStyle = styled.div`
         }
     }
 `;
+
+export const DashboardStyle = styled.div`
+    button {
+        position: initial;
+    }
+`;
+
+export const NavigationStyle = styled.div`
+    .MuiAppBar-root {
+        background: #38b6ff;
+    }
+
+    .logout {
+        position: relative;
+        text-transform: uppercase;
+        display: inline-block;
+        padding-bottom: 5px;
+        overflow: hidden;
+        font-size: 0.8rem;
+        color: white;
+        text-decoration: none;
+        cursor: pointer;
+
+        &:before {
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            height: 2px;
+            background: white;
+            transform:  translateX(-100%);
+            content: '';
+            position: absolute;
+            transition: transform .5s ease;
+        }
+
+        &:hover:before {
+            transform:  translateX(0);
+        }
+
+        &:hover {
+            background-color: transparent;
+        }
+
+        &:after {
+            content: '';
+            position: absolute;
+            transition: transform .5s ease;
+        }
+    }
+
+    @media screen and (min-width: 700px) {
+        .logout {
+            font-size: 1rem;
+        }
+    }
+
+    figure {
+        height: 2rem;
+        width: 6rem;
+        overflow: hidden;
+        margin: 0;
+        margin-top: 5px;
+        margin-right: auto;
+
+        @media screen and (min-width: 700px) {
+            height: 3rem;
+            width: 9rem;
+        }
+
+        img {
+            width: 100%;
+            height: 100%;
+            transform: scale(3);
+        }
+    }
+`;
+
+export const MenuStyle = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    position: fixed;
+    height: 100vh;
+    text-align: left;
+    padding: 1rem;
+    padding-top: 0.5rem;
+    top: 0;
+    left: 0;
+    background-color: #38b6ff;
+    transition: transform 0.3s ease-in-out;
+    transform: ${({open}) => open ? 'translateX(0%)' : 'translateX(-100%)'};
+
+    .close-button {
+        color: white;
+        font-size: 2.5rem;
+        cursor: pointer;
+    }
+
+    ul {
+        list-style-type: none;
+        margin-top: 25vh;
+
+        li {
+            margin-bottom: 5vh;
+        }
+    }
+
+    a {
+        position: relative;
+        font-size: 1.5rem;
+        text-transform: uppercase;
+        display: inline-block;
+        padding-top: 1rem;
+        padding-bottom: 5px;
+        font-weight: bold;
+        letter-spacing: 0.5rem;
+        color: white;
+        text-decoration: none;
+        overflow: hidden;
+
+        &:before {
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            height: 2px;
+            background: white;
+            transform:  translateX(-100%);
+            content: '';
+            position: absolute;
+            transition: transform .5s ease;
+        }
+
+        &:hover:before {
+            transform:  translateX(0);
+        }
+
+        &:after {
+            content: '';
+            position: absolute;
+            transition: transform .5s ease;
+        }
+    }
+`;
