@@ -23,17 +23,19 @@ const Dashboard = props => {
         <DashboardStyle>
             <Navigation />
             <div>
-                <h3>Welcome!</h3>
-                <h4>Are you ready to tell me about your day?</h4>
-                <Button onClick={onHandleSubmit} variant="contained" color="primary">
-                    Let's Go
-                </Button>
-                <h4>Or would you rather see or update what you saved previously? </h4>
-                <Button onClick={onCalendarSubmit} variant="contained" color="primary">
-                    Go to Calendar
-                </Button>
+                <div className='content'>
+                    <h1>Welcome!</h1>
+                    <h4>Are you ready to tell me about your day?</h4>
+                    <Button className='dashboard-button' onClick={onHandleSubmit} variant="contained" color="primary">
+                        Let's Go
+                    </Button>
+                    <h4>Or would you rather see or update what you saved previously? </h4>
+                    <Button className='dashboard-button' onClick={onCalendarSubmit} variant="contained" color="primary">
+                        Go to Calendar
+                    </Button>
+                </div>
+                <DiaryCalendar {...props} />
             </div>
-            {/* <DiaryCalendar /> */}
         </DashboardStyle>
     )
 };
