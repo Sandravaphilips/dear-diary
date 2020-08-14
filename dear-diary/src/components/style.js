@@ -10,6 +10,7 @@ export const LoginStyle = styled.div`
     top: 0;
     margin: 0 auto;
     position: fixed;
+    font-family: 'Signika Negative', sans-serif;
 
     @media screen and (min-width: 700px) {
         font-size: 1.5rem;
@@ -30,7 +31,7 @@ export const LoginStyle = styled.div`
         @media screen and (min-width: 700px) {
             margin: 0 auto;
             width: 500px;
-            padding: 0 25px;
+            padding: 1px 25px 0;
         }
     }
 
@@ -40,6 +41,7 @@ export const LoginStyle = styled.div`
 
         input {
             margin-top: 10px;
+            font-family: 'Signika Negative', sans-serif;
 
             @media screen and (min-width: 700px) {
                 font-size: 1.5rem;
@@ -57,6 +59,7 @@ export const LoginStyle = styled.div`
             background-color: #38b6ff;
             height: 40px;
             font-size: 1.2rem;
+            font-family: 'Signika Negative', sans-serif;
 
             @media screen and (min-width: 700px) {
                 width: 200px;
@@ -113,6 +116,7 @@ export const SignUpStyle = styled.div`
     margin: 0 auto;
     position: fixed;
     font-size: 0.8rem;
+    font-family: 'Signika Negative', sans-serif;
 
     @media screen and (min-width: 700px) {
         font-size: 1.5rem;
@@ -133,7 +137,7 @@ export const SignUpStyle = styled.div`
         @media screen and (min-width: 700px) {
             margin: 0 auto;
             width: 500px;
-            padding: 0 25px;
+            padding: 2px 25px 0;
         }
     }
 
@@ -143,6 +147,7 @@ export const SignUpStyle = styled.div`
 
         input {
             margin-top: 10px;
+            font-family: 'Signika Negative', sans-serif;
 
             @media screen and (min-width: 700px) {
                 font-size: 1.5rem;
@@ -160,6 +165,7 @@ export const SignUpStyle = styled.div`
             background-color: #38b6ff;
             height: 40px;
             font-size: 1.2rem;
+            font-family: 'Signika Negative', sans-serif;
 
             @media screen and (min-width: 700px) {
                 width: 200px;
@@ -207,8 +213,70 @@ export const SignUpStyle = styled.div`
 `;
 
 export const DashboardStyle = styled.div`
-    button {
+    .content {
+        margin: 90px 15px;
+        font-size: 1.3rem;
+
+        @media screen and (min-width: 700px) {
+            font-size: 1.5rem;
+        }
+
+        @media screen and (min-width: 1200px) {
+            text-align: left;
+            margin: 50px 1.8rem auto
+        }
+
+        h1 {
+            font-weight: 700;
+        }
+    }
+
+    @media screen and (min-width: 1200px) {
+        >div {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+    }
+
+    .calendar {
+        display: none;
+
+        @media screen and (min-width: 1000px) {
+            display: block;
+            margin: 200px auto auto;
+            transform: scale(2);
+            width: 30%;
+        }
+
+        @media screen and (min-width: 1200px) {
+            transform: scale(1.2);
+            width: 25%;
+            margin-top: 150px;
+            border: 1px dashed grey;
+            padding: 2rem;
+            border-radius: 0.5rem;
+        }
+    }
+
+    .dashboard-button {
         position: initial;
+        width: 220px;
+        background-color: #38b6ff;
+        height: 50px;
+        font-size: 1.4rem;
+        font-family: 'Signika Negative', sans-serif;
+
+        @media screen and (min-width: 700px) {
+            width: 270px;
+            font-size: 1.7rem;
+            height: 60px;
+            margin: 30px auto;
+        }
+
+        @media screen and (min-width: 1200px) {
+            font-size: 1.4rem;
+        }
     }
 `;
 
@@ -223,7 +291,7 @@ export const NavigationStyle = styled.div`
         display: inline-block;
         padding-bottom: 5px;
         overflow: hidden;
-        font-size: 0.8rem;
+        font-size: 1.1rem;
         color: white;
         text-decoration: none;
         cursor: pointer;
@@ -257,7 +325,7 @@ export const NavigationStyle = styled.div`
 
     @media screen and (min-width: 700px) {
         .logout {
-            font-size: 1rem;
+            font-size: 1.3rem;
         }
     }
 
