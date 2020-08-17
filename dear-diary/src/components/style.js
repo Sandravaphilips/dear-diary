@@ -247,6 +247,10 @@ export const DashboardStyle = styled.div`
             margin: 200px auto auto;
             transform: scale(2);
             width: 30%;
+
+            .react-calendar {
+                border-radius: 0.5rem;
+            }
         }
 
         @media screen and (min-width: 1200px) {
@@ -280,7 +284,70 @@ export const DashboardStyle = styled.div`
     }
 `;
 
-export const NavigationStyle = styled.div`
+export const CalendarStyle = styled.div`
+    p{
+        @media screen and (min-width: 700px) {
+            font-size: 1.5rem;
+        }
+
+        @media screen and (min-width: 1000px) {
+            font-size: 2rem;
+        }
+
+        @media screen and (min-width: 1200px) {
+            font-size: 1.5rem;
+        }
+    }
+    .calendar {
+        width: 85%;
+        margin: 60px auto;
+
+        @media screen and (min-width: 700px) {
+            transform: scale(2);
+            width: 45%;
+            margin-top: 250px;
+        }
+
+        @media screen and (min-width: 1000px) {
+            transform: scale(2.5);
+            width: 33%;
+            margin-top: 350px;
+        }
+
+        @media screen and (min-width: 1200px) {
+            transform: scale(2.5);
+            width: 20rem;
+            margin-top: 350px;
+        }
+
+        .react-calendar {
+            border-radius: 0.5rem;
+            padding: 0.2rem;
+        }
+    }
+
+    footer {
+        position: absolute;
+        bottom: 0;
+        margin: auto;
+        width: 100%;
+        font-size: 0.7rem;
+
+        @media screen and (min-width: 700px) {
+            p {
+                font-size: 1rem;
+            }
+        }
+
+        @media screen and (min-width: 1200px) {
+            position: relative;
+            margin-top: 370px;
+        }
+    }
+`;
+
+
+export const NavigationStyle = styled.div`    
     .MuiAppBar-root {
         background: #38b6ff;
     }
@@ -289,7 +356,7 @@ export const NavigationStyle = styled.div`
         position: relative;
         text-transform: uppercase;
         display: inline-block;
-        padding-bottom: 5px;
+        padding: 5px auto;
         overflow: hidden;
         font-size: 1.1rem;
         color: white;
