@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { TextField, Button, Modal } from '@material-ui/core';
+import { TextField, Button, Modal, TextareaAutosize } from '@material-ui/core';
 import withAuth from '../axios';
+import { DiaryStyle } from './style';
+import Navigation from './Navigation.';
 
 const Diary = props => {
     const [photo, setPhoto] = useState(null);
@@ -81,15 +83,20 @@ const Diary = props => {
     
     if(isLoading) return <div>Loading...</div> 
     return(
-        <div>
-            <Button onClick={handleOpen} variant="contained" color="primary">
+        <DiaryStyle>
+            <Navigation />
+            {/* <Button onClick={handleOpen} variant="contained" color="primary">
                 Upload Picture
-            </Button>
-            <TextField id="diary-text" onChange={onDiaryTextChange} defaultValue={diary ? diary.diaryText : ''} variant="outlined" />
-            <Button onClick={onHandleSubmit} variant="contained" color="primary">
-                Done
-            </Button>
-
+            </Button> */}
+            <div className='diary-form'>
+                <TextareaAutosize id="diary-text" onChange={onDiaryTextChange} rowsMin={25} rowsMax={45} defaultValue={diary ? diary.diaryText : ''} variant="outlined" placeholder="Start writing..." />
+                <Button className='diary-button' onClick={onHandleSubmit} variant="contained" color="primary">
+                    Done
+                </Button>
+            </div>
+            <footer>
+                <p>&copy; Dear Diary</p>
+            </footer>
             {/* <Modal
                 open={open}
                 onClose={handleClose}
@@ -105,7 +112,7 @@ const Diary = props => {
                     </Button>
                 </div>
             </Modal> */}
-        </div>
+        </DiaryStyle>
     )
 };
 
