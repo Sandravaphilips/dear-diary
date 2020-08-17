@@ -346,6 +346,71 @@ export const CalendarStyle = styled.div`
     }
 `;
 
+export const DiaryStyle = styled.div`
+    .diary-form {
+        margin: 60px auto;
+        display: flex;
+        width: 90%;
+        flex-direction: column;
+        align-items: flex-end;
+        justify-content: center;
+
+        @media screen and (min-width: 700px) {
+            width: 90%;
+        }
+
+        #diary-text {
+            width: 91%;
+            font-family: 'Signika Negative', sans-serif;
+            padding: 10px;
+
+            @media screen and (min-width: 700px) {
+                width: 98%;
+            }
+        }
+
+        .diary-button { 
+            margin-top: 30px;
+            width: 170px;
+            background-color: #38b6ff;
+            height: 40px;
+            font-size: 1.2rem;
+            font-family: 'Signika Negative', sans-serif;
+            position: initial;
+
+            @media screen and (min-width: 700px) {
+                width: 200px;
+                font-size: 1.7rem;
+                height: 60px;                
+            }
+
+            @media screen and (min-width: 1200px) {
+                font-size: 1.4rem;
+            }
+        }
+    }
+
+    footer {
+        position: relative;
+        margin: auto;
+        margin-top: 170px;
+        width: 100%;
+        font-size: 0.7rem;
+
+        @media screen and (min-width: 700px) {
+            position: absolute;
+            bottom: 0;
+            p {
+                font-size: 1rem;
+            }
+        }
+
+        @media screen and (min-width: 1200px) {
+            position: relative;
+            margin-top: 370px;
+        }
+    }
+`;
 
 export const NavigationStyle = styled.div`    
     .MuiAppBar-root {
