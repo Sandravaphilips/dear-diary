@@ -3,7 +3,7 @@ const fileUpload = require('express-fileupload');
 const db = require('../helpers/dbModel');
 const variables = require('../helpers/variables');
 const { validateBody, validatePicture } = require('../helpers/middleware');
-const cloudinary = require('../config/clConfig');
+const cloudinaryUploader = require('../config/clConfig');
 
 router.use(fileUpload({
     useTempFiles: true
@@ -23,6 +23,9 @@ router.post('/diary', validateBody, async(req, res) => {
 router.post('/gallery', validatePicture, async(req, res) => {
     try {
         const file = req.files.photo;
+        const image = await cloudinaryUploader(file.tempFilePath);
+        const newPicture = await db.addPicture({date: image.date.substring(0, 10), picture: image.url, userId: req.decodedToken.subject })
+        res.status(201).json({ message: variables.newEntry, newPicture })
         // const image = await new Promise(async resolve => {
         //     cloudinary.uploader.upload(file.tempFilePath, {upload_preset: 'dear_diary'}, (err, result) => {
         //         if (err) {
@@ -44,11 +47,11 @@ router.post('/gallery', validatePicture, async(req, res) => {
         // })
         // let image;
 
-        cloudinary.uploader.upload(file.tempFilePath, {upload_preset: 'dear_diary'}, async (err, result) => {
-            const newPicture = await db.addPicture({ date: result.created_at.substring(0, 10), picture: result.url, userId: req.decodedToken.subject });
-            res.status(201).json({ message: variables.newEntry, newPicture })
-            // image = result;
-        })
+        // cloudinary.uploader.upload(file.tempFilePath, {upload_preset: 'dear_diary'}, async (err, result) => {
+        //     const newPicture = await db.addPicture({ date: result.created_at.substring(0, 10), picture: result.url, userId: req.decodedToken.subject });
+        //     res.status(201).json({ message: variables.newEntry, newPicture })
+        //     // image = result;
+        // })
         // const newPicture = await db.addPicture({ date: image.date.substring(0, 10), picture: image.url, userId: req.decodedToken.subject });
         // res.status(201).json({ message: variables.newEntry, newPicture })        
     }
