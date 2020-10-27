@@ -1,14 +1,21 @@
 const router = require('express').Router();
-const fileUpload = require('express-fileupload');
+// const fileUpload = require('express-fileupload');
+const fs = require('fs');
 const db = require('../helpers/dbModel');
 const variables = require('../helpers/variables');
 const { validateBody, validatePicture } = require('../helpers/middleware');
 const cloudinaryUploader = require('../config/clConfig');
+const upload = require('../config/multer');
 
-router.use(fileUpload({
-    useTempFiles: true
-}))
+// router.use(fileUpload({
+//     useTempFiles: false
+// }))
 
+function deleteTempFile(tempPath) {
+	fs.unlink(tempPath, function(err) {
+		if (err) return handleError(err);
+	})
+}
 
 router.post('/diary', validateBody, async(req, res) => {
     try {
@@ -20,11 +27,15 @@ router.post('/diary', validateBody, async(req, res) => {
     }
 })
 
-router.post('/gallery', validatePicture, async(req, res) => {
+router.post('/gallery', upload.array('photo'), async(req, res) => {
     try {
-        const file = req.files.photo;
-        const image = await cloudinaryUploader(file.tempFilePath);
+        const tempPath = req.files[0].path;
+        console.log(req.files)
+        // const file = req.files.photo;
+        const image = await cloudinaryUploader(tempPath, "Images");
         const newPicture = await db.addPicture({date: image.date.substring(0, 10), picture: image.url, userId: req.decodedToken.subject })
+        deleteTempFile(tempPath)
+        // console.log(tempPath)
         res.status(201).json({ message: variables.newEntry, newPicture })
         // const image = await new Promise(async resolve => {
         //     cloudinary.uploader.upload(file.tempFilePath, {upload_preset: 'dear_diary'}, (err, result) => {
