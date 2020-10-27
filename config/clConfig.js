@@ -6,7 +6,7 @@ cloudinary.config({
     api_secret: 'gqyAAprCpK_c5aFlatRMx-omi5M'
 })
 
-const cloudinaryUploader = file => {
+const cloudinaryUploader = (file, folder) => {
     return new Promise(async resolve => {
         cloudinary.uploader.upload(file, {upload_preset: 'dear_diary'}, (err, result) => {
             if (err) {
@@ -20,7 +20,7 @@ const cloudinaryUploader = file => {
                     },
                     {
                         resource_type: 'auto',
-                        folder: 'Images'
+                        folder: folder
                     }
                 )
             }
