@@ -37,25 +37,7 @@ router.post('/gallery', upload.array('photo'), async(req, res) => {
         deleteTempFile(tempPath)
         // console.log(tempPath)
         res.status(201).json({ message: variables.newEntry, newPicture })
-        // const image = await new Promise(async resolve => {
-        //     cloudinary.uploader.upload(file.tempFilePath, {upload_preset: 'dear_diary'}, (err, result) => {
-        //         if (err) {
-        //             console.log(err)
-        //         } else {
-        //             resolve(
-        //                 {
-        //                     url:result.url,
-        //                     id: result.public_id,
-        //                     date: result.created_at
-        //                 },
-        //                 {
-        //                     resource_type: 'auto',
-        //                     folder: 'Images'
-        //                 }
-        //             )
-        //         }
-        //     })
-        // })
+        
         // let image;
 
         // cloudinary.uploader.upload(file.tempFilePath, {upload_preset: 'dear_diary'}, async (err, result) => {
