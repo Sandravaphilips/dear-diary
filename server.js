@@ -22,7 +22,7 @@ const corsOptions = (origin, callback) => {
 
 server.use(express.json());
 server.use(helmet());
-server.use(cors(corsOptions));
+server.use(cors());
 
 server.use('/api/auth', validateBody, validateEmail, validateUser, authRouter);
 server.use('/api', restricted, userRouter);
