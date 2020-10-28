@@ -41,12 +41,15 @@ const Diary = props => {
 
     const onChange = e => {
         const file = e.target.files[0];
+        console.log(file)
         setPhoto(file);
     };
 
     const onUpload = () => {
-        withAuth().post('https://my-dear-diary.herokuapp.com/api/gallery', photo)
-        .then(res => alert(res.data.message))
+        let fd = new FormData();
+        fd.append('photo', photo)
+        withAuth('multipart/form-data').post('https://my-dear-diary.herokuapp.com/api/gallery', fd)
+        .then(res => console.log(res.data))
         .catch(error => {
             alert(error);
         });
@@ -85,9 +88,9 @@ const Diary = props => {
     return(
         <DiaryStyle>
             <Navigation />
-            {/* <Button onClick={handleOpen} variant="contained" color="primary">
+            <Button onClick={handleOpen} variant="contained" color="primary">
                 Upload Picture
-            </Button> */}
+            </Button>
             <div className='diary-form'>
                 <TextareaAutosize id="diary-text" onChange={onDiaryTextChange} rowsMin={25} rowsMax={45} defaultValue={diary ? diary.diaryText : ''} variant="outlined" placeholder="Start writing..." />
                 <Button className='diary-button' onClick={onHandleSubmit} variant="contained" color="primary">
@@ -97,7 +100,7 @@ const Diary = props => {
             <footer>
                 <p>&copy; Dear Diary</p>
             </footer>
-            {/* <Modal
+            <Modal
                 open={open}
                 onClose={handleClose}
             >
@@ -111,7 +114,7 @@ const Diary = props => {
                     Cancel
                     </Button>
                 </div>
-            </Modal> */}
+            </Modal>
         </DiaryStyle>
     )
 };
