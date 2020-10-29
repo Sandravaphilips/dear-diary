@@ -428,11 +428,6 @@ export const DiaryStyle = styled.div`
             margin-top: 370px;
         }
     }
-
-    #modal-buttons {
-        background-color : #38b6ff;
-        margin-top: 20px;
-    }
 `;
 
 export const NavigationStyle = styled.div`    
