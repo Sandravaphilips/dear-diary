@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { TextField, Button, Modal, TextareaAutosize, makeStyles } from '@material-ui/core';
+import { Button, Modal, TextareaAutosize, makeStyles, CircularProgress } from '@material-ui/core';
+import { store } from 'react-notifications-component';
 import withAuth from '../axios';
 import { DiaryStyle } from './style';
 import Navigation from './Navigation.';
 
 function getModalStyle() {
     return {
+        top: '50%',
+        left: '50%',
         transform: 'translate(-50%, -50%)',
     };
 }
@@ -28,6 +31,7 @@ const Diary = props => {
         diaryText: ''
     });
     const [isLoading, setIsLoading] = useState(true);
+    const [uploading, setUploading] = useState(false);
     const [results, setResults] = useState(false);
     const classes = useStyles();
     const [modalStyle] = useState(getModalStyle);
@@ -64,12 +68,43 @@ const Diary = props => {
     };
 
     const onUpload = () => {
+        setUploading(true)
         let fd = new FormData();
         fd.append('photo', photo)
         withAuth('multipart/form-data').post('https://my-dear-diary.herokuapp.com/api/gallery', fd)
-        .then(res => console.log(res.data))
+        .then(res => {
+            handleClose()
+            store.addNotification({
+                title: "Success!",
+                message: res.data.message,
+                type: "success",
+                insert: "top",
+                container: "top-right",
+                animationIn: ["animated", "fadeIn"],
+                animationOut: ["animated", "fadeOut"],
+                dismiss: {
+                    duration: 3000,
+                    onScreen: true
+                }               
+            });
+            setUploading(false)
+        })
         .catch(error => {
-            alert(error);
+            console.log(error)
+            // store.addNotification({
+            //     title: "Error!",
+            //     message: error.response.data.message,
+            //     type: "error",
+            //     insert: "top",
+            //     container: "top-right",
+            //     animationIn: ["animated", "fadeIn"],
+            //     animationOut: ["animated", "fadeOut"],
+            //     dismiss: {
+            //         duration: 3000,
+            //         onScreen: true
+            //     }                
+            // });
+            setUploading(false)
         });
     }
     const onHandleSubmit = e => {
@@ -102,7 +137,10 @@ const Diary = props => {
         }              
     }
     
-    if(isLoading) return <div>Loading...</div> 
+    if(isLoading) return (
+    <div className='loading'>
+        <Navigation />
+        <CircularProgress style={{color: '#38b6ff', marginTop: '30vh'}} /></div>) 
     return(
         <DiaryStyle>
             <Navigation />
@@ -124,17 +162,28 @@ const Diary = props => {
                 open={open}
                 onClose={handleClose}
             >
-                <div style={modalStyle} className={classes.paper}>
-                    <h2>Upload your picture</h2>
-                    <input type="file" name="Upload" onChange={onChange} />
-                    <section style={{marginTop: '20px'}}>
-                        <Button variant="contained" style={{backgroundColor: '#38b6ff', fontSize: '1.2rem'}} onClick={onUpload} color="primary">
-                            Save
-                        </Button>
-                        <Button variant="contained" style={{backgroundColor: '#38b6ff', marginLeft: '10px', fontSize: '1.2rem'}} onClick={handleClose} color="primary">
-                            Cancel
-                        </Button>
-                    </section>
+                <div style={modalStyle} className={classes.paper}>         
+                    {
+                        uploading ? (
+                            <div style={{textAlign: 'center', marginTop: '20px'}}>
+                                <CircularProgress style={{color: '#38b6ff'}} />
+                                <h5>Uploading...</h5>
+                            </div>
+                        ) : (
+                            <div>
+                                <h2>Upload your picture</h2>                   
+                                <input type="file" name="Upload" onChange={onChange} />
+                                <section style={{marginTop: '20px'}}>
+                                    <Button variant="contained" style={{backgroundColor: '#38b6ff', fontSize: '1.2rem'}} onClick={onUpload} color="primary">
+                                        Save
+                                    </Button>
+                                    <Button variant="contained" style={{backgroundColor: '#38b6ff', marginLeft: '10px', fontSize: '1.2rem'}} onClick={handleClose} color="primary">
+                                        Cancel
+                                    </Button>
+                                </section>
+                            </div>
+                        )
+                    }
                 </div>
             </Modal>
         </DiaryStyle>
