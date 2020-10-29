@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import { TextField, Button } from '@material-ui/core';
+import { TextField, Button, CircularProgress } from '@material-ui/core';
 
 import logo from './assets/logo.svg';
 import { SignUpStyle } from './style';
@@ -15,6 +15,7 @@ const initialFormValues = {
 const SignUp = props => {
     const [formValues, setFormValues] = useState(initialFormValues);
     const [confirmPassword, setConfirmPassword] = useState('');
+    const [loading, setLoading] = useState(false);
 
     const onEmailChange = e => {
         setFormValues({...formValues, emailAddress: e.target.value});
@@ -34,6 +35,7 @@ const SignUp = props => {
 
     const onHandleSubmit = e => {
         e.preventDefault()
+        setLoading(true)
         if(formValues.password !== confirmPassword) {
             alert('Passwords must match!!')
         } else {
@@ -87,7 +89,9 @@ const SignUp = props => {
                         placeholder='#2password@'
                     />
                     <Button onClick={onHandleSubmit} variant="contained" color="primary">
-                        Sign Up
+                        {
+                            loading ? <CircularProgress color='white' /> : 'Sign Up'
+                        }
                     </Button>
 
                     <p>Already have an account? <Link to='/'>Log In</Link></p> 
