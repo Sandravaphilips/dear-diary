@@ -1,6 +1,5 @@
 const router = require('express').Router();
 const fileUpload = require('express-fileupload');
-const fs = require('fs');
 const db = require('../helpers/dbModel');
 const variables = require('../helpers/variables');
 const { validateBody, validatePicture } = require('../helpers/middleware');
