@@ -2,27 +2,16 @@ const express = require('express');
 const helmet = require('helmet');
 const cors = require('cors');
 
-const server = express();
-const port = process.env.PORT || 5000;
-
 const authRouter = require('./router/authRouter');
 const userRouter = require('./router/userRouter');
 const { validateBody, validateEmail, validateUser, restricted } = require('./helpers/middleware');
 
-const whiteList = [
-  "http://localhost:3000/",
-  "https://localhost:3000/"
-]
-
-const corsOptions = (origin, callback) => {
-  if(whiteList.indexOf(origin) !== 1 || !origin) {
-    callback(null, true)
-  } else callback(new Error("Not Allowed By CORS"))
-}
+const server = express();
+const port = process.env.PORT || 5000;
 
 server.use(express.json());
 server.use(helmet());
-server.use(cors(corsOptions));
+server.use(cors());
 
 server.use('/api/auth', validateBody, validateEmail, validateUser, authRouter);
 server.use('/api', restricted, userRouter);

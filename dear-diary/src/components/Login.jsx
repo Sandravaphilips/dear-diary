@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import { TextField, Button } from '@material-ui/core';
+import { TextField, Button, CircularProgress } from '@material-ui/core';
 
 import logo from './assets/logo.svg';
 import { LoginStyle } from './style';
@@ -13,6 +13,7 @@ const initialFormValues = {
 
 const Login = props => {
     const [formValues, setFormValues] = useState(initialFormValues);
+    const [loading, setLoading] = useState(false);
 
     const onEmailChange = e => {
         setFormValues({...formValues, emailAddress: e.target.value});
@@ -22,8 +23,9 @@ const Login = props => {
         setFormValues({...formValues, password: e.target.value});
     }
 
-    const onHandleSubmit = e => {
+    const onHandleSubmit = e => {        
         e.preventDefault()
+        setLoading(true)
         axios.post('https://my-dear-diary.herokuapp.com/api/auth/login', formValues)
         .then(response => {
             localStorage.setItem("token", response.data.token);            
@@ -52,7 +54,9 @@ const Login = props => {
                         onChange={onPasswordChange}
                     /> 
                     <Button onClick={onHandleSubmit} variant="contained" color="primary">
-                        Login
+                        {
+                            loading ? <CircularProgress color='white' /> : 'Login'
+                        }
                     </Button>
 
                     <p>Don't have an account? <Link to='/signup'>Sign Up</Link></p> 
