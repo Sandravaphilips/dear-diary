@@ -28,7 +28,6 @@ router.post('/gallery', validatePicture, async(req, res) => {
         const newPicture = await db.addPicture({date: image.date.substring(0, 10), picture: image.url, userId: req.decodedToken.subject })
 
         res.status(201).json({ message: variables.newEntry, newPicture })
-                
     }
     catch (error) {
         res.status(500).json({ message: variables.errorMessage, error: error.message })
