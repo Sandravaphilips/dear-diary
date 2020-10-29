@@ -1,8 +1,25 @@
 import React, { useState, useEffect } from 'react';
-import { TextField, Button, Modal, TextareaAutosize } from '@material-ui/core';
+import { TextField, Button, Modal, TextareaAutosize, makeStyles } from '@material-ui/core';
 import withAuth from '../axios';
 import { DiaryStyle } from './style';
 import Navigation from './Navigation.';
+
+function getModalStyle() {
+    return {
+        transform: 'translate(-50%, -50%)',
+    };
+}
+
+const useStyles = makeStyles((theme) => ({
+    paper: {
+        position: 'absolute',
+        width: 300,
+        backgroundColor: theme.palette.background.paper,
+        border: '2px solid black',
+        padding: theme.spacing(2, 4, 3),
+        paddingLeft: '4rem'
+    },
+}));
 
 const Diary = props => {
     const [photo, setPhoto] = useState(null);
@@ -12,6 +29,8 @@ const Diary = props => {
     });
     const [isLoading, setIsLoading] = useState(true);
     const [results, setResults] = useState(false);
+    const classes = useStyles();
+    const [modalStyle] = useState(getModalStyle);
     
     const date = props.match.params.date;
 
@@ -41,7 +60,6 @@ const Diary = props => {
 
     const onChange = e => {
         const file = e.target.files[0];
-        console.log(file)
         setPhoto(file);
     };
 
@@ -88,14 +106,16 @@ const Diary = props => {
     return(
         <DiaryStyle>
             <Navigation />
-            <Button onClick={handleOpen} variant="contained" color="primary">
-                Upload Picture
-            </Button>
             <div className='diary-form'>
                 <TextareaAutosize id="diary-text" onChange={onDiaryTextChange} rowsMin={25} rowsMax={45} defaultValue={diary ? diary.diaryText : ''} variant="outlined" placeholder="Start writing..." />
-                <Button className='diary-button' onClick={onHandleSubmit} variant="contained" color="primary">
-                    Done
-                </Button>
+                <section className='btn'>
+                    <Button className='diary-button' onClick={handleOpen} variant="contained" color="primary">
+                        Upload Picture
+                    </Button>
+                    <Button className='diary-button' onClick={onHandleSubmit} variant="contained" color="primary">
+                        Done
+                    </Button>
+                </section>
             </div>
             <footer>
                 <p>&copy; Dear Diary</p>
@@ -104,15 +124,17 @@ const Diary = props => {
                 open={open}
                 onClose={handleClose}
             >
-                <div>
-                    <h3>Upload your picture</h3>
+                <div style={modalStyle} className={classes.paper}>
+                    <h2>Upload your picture</h2>
                     <input type="file" name="Upload" onChange={onChange} />
-                    <Button variant="contained" onClick={onUpload} color="primary">
-                    Save
-                    </Button>
-                    <Button variant="contained" onClick={handleClose} color="primary">
-                    Cancel
-                    </Button>
+                    <section style={{marginTop: '20px'}}>
+                        <Button variant="contained" style={{backgroundColor: '#38b6ff', fontSize: '1.2rem'}} onClick={onUpload} color="primary">
+                            Save
+                        </Button>
+                        <Button variant="contained" style={{backgroundColor: '#38b6ff', marginLeft: '10px', fontSize: '1.2rem'}} onClick={handleClose} color="primary">
+                            Cancel
+                        </Button>
+                    </section>
                 </div>
             </Modal>
         </DiaryStyle>

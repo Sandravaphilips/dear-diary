@@ -369,9 +369,26 @@ export const DiaryStyle = styled.div`
             }
         }
 
+        .btn {
+            display: flex;
+            flex-direction: column;
+
+            @media screen and (min-width: 700px) {
+                flex-direction: row;
+                justify-content: space-between;
+                width: 68%;
+            }
+            @media screen and (min-width: 1000px) {
+                width: 50%
+            }
+            @media screen and (min-width: 1200px) {
+                width: 35%
+            }
+        }
+
         .diary-button { 
             margin-top: 30px;
-            width: 170px;
+            max-width: 220px;
             background-color: #38b6ff;
             height: 40px;
             font-size: 1.2rem;
@@ -379,7 +396,8 @@ export const DiaryStyle = styled.div`
             position: initial;
 
             @media screen and (min-width: 700px) {
-                width: 200px;
+                min-width: 200px;
+                max-width: 300px;
                 font-size: 1.7rem;
                 height: 60px;                
             }
@@ -409,6 +427,11 @@ export const DiaryStyle = styled.div`
             position: relative;
             margin-top: 370px;
         }
+    }
+
+    #modal-buttons {
+        background-color : #38b6ff;
+        margin-top: 20px;
     }
 `;
 
