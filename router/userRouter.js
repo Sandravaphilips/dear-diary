@@ -2,7 +2,7 @@ const router = require('express').Router();
 const fileUpload = require('express-fileupload');
 const db = require('../helpers/dbModel');
 const variables = require('../helpers/variables');
-const { validateBody, validatePicture } = require('../helpers/middleware');
+const { validateBody, validatePicture, validatePictureFormat, validateImageSize } = require('../helpers/middleware');
 const cloudinaryUploader = require('../config/clConfig');
 
 router.use(fileUpload({
@@ -20,13 +20,13 @@ router.post('/diary', validateBody, async(req, res) => {
     }
 })
 
-router.post('/gallery', validatePicture, async(req, res) => {
+router.post('/gallery', validatePicture, validatePictureFormat, validateImageSize, async(req, res) => {
     try {
         const file = req.files.photo;
         const image = await cloudinaryUploader(file.tempFilePath, "Images");
         const newPicture = await db.addPicture({date: image.date.substring(0, 10), picture: image.url, userId: req.decodedToken.subject })
 
-        res.status(201).json({ message: variables.newEntry, newPicture })
+        res.status(201).json({ message: variables.pictureAdded, newPicture })
     }
     catch (error) {
         res.status(500).json({ message: variables.errorMessage, error: error.message })
