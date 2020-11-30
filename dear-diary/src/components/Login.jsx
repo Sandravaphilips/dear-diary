@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { store } from 'react-notifications-component';
 import axios from 'axios';
 import { TextField, Button, CircularProgress } from '@material-ui/core';
 
@@ -30,9 +31,23 @@ const Login = props => {
         .then(response => {
             localStorage.setItem("token", response.data.token);            
             props.history.push('/dashboard');
+            setLoading(false)
         })
         .catch(error => {
-            alert(error);
+            store.addNotification({
+                title: "Error!",
+                message: error.response.data.message,
+                type: "warning",
+                insert: "top",
+                container: "top-right",
+                animationIn: ["animated", "fadeIn"],
+                animationOut: ["animated", "fadeOut"],
+                dismiss: {
+                    duration: 3000,
+                    onScreen: true
+                }                
+            });
+            setLoading(false)
         });
     }
     return(
@@ -55,7 +70,7 @@ const Login = props => {
                     /> 
                     <Button onClick={onHandleSubmit} variant="contained" color="primary">
                         {
-                            loading ? <CircularProgress color='white' /> : 'Login'
+                            loading ? <CircularProgress color='primary' style={{color: 'white'}} /> : 'Login'
                         }
                     </Button>
 
