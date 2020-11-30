@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { store } from 'react-notifications-component';
 import axios from 'axios';
 import { TextField, Button, CircularProgress } from '@material-ui/core';
 
@@ -45,7 +46,19 @@ const SignUp = props => {
                 props.history.push('/dashboard');
             })
             .catch(error => {
-                alert(error);
+                store.addNotification({
+                    title: "Error!",
+                    message: error.response.data.message,
+                    type: "warning",
+                    insert: "top",
+                    container: "top-right",
+                    animationIn: ["animated", "fadeIn"],
+                    animationOut: ["animated", "fadeOut"],
+                    dismiss: {
+                        duration: 3000,
+                        onScreen: true
+                    }                
+                });
             });
         }        
     }
