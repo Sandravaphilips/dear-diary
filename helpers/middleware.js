@@ -1,5 +1,6 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const path = require('path');
 
 const { secret } = require('./getToken');
 const variables = require('./variables');
@@ -15,10 +16,29 @@ module.exports = {
     },
 
     validatePicture: function (req, res, next) {
-        if (req.files !== undefined) {
+        if (req.files && req.files.photo !== null) {
             next();
         } else {
             res.status(400).json({ message: variables.choosePhoto });
+        }
+    },
+
+    validatePictureFormat: function(req, res, next) {
+        const filetypes = /png|jpeg|jpg|gif/;
+        
+        if(filetypes.test(path.extname(req.files.photo.name))) {
+            next();
+        } else {            
+            res.status(400).json({message: variables.notAccepted})
+        }
+    },
+
+    validateImageSize: function(req, res, next) {
+        const imageLimit = 1024*1024;
+        if(req.files.photo.size <= imageLimit) {
+            next()
+        } else {
+            res.status(400).json({message: variables.invalidSize})
         }
     },
 
