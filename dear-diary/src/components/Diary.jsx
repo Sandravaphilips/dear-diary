@@ -67,7 +67,8 @@ const Diary = props => {
         setPhoto(file);
     };
 
-    const onUpload = () => {
+    const onUpload = e => {
+        e.preventDefault()        
         setUploading(true)
         let fd = new FormData();
         fd.append('photo', photo)
@@ -90,22 +91,23 @@ const Diary = props => {
             setUploading(false)
         })
         .catch(error => {
-            console.log(error)
-            // store.addNotification({
-            //     title: "Error!",
-            //     message: error.response.data.message,
-            //     type: "error",
-            //     insert: "top",
-            //     container: "top-right",
-            //     animationIn: ["animated", "fadeIn"],
-            //     animationOut: ["animated", "fadeOut"],
-            //     dismiss: {
-            //         duration: 3000,
-            //         onScreen: true
-            //     }                
-            // });
+            store.addNotification({
+                title: "Error!",
+                message: error.response.data.message,
+                type: "warning",
+                insert: "top",
+                container: "top-right",
+                animationIn: ["animated", "fadeIn"],
+                animationOut: ["animated", "fadeOut"],
+                dismiss: {
+                    duration: 3000,
+                    onScreen: true
+                }                
+            });
             setUploading(false)
         });
+        
+        
     }
     const onHandleSubmit = e => {
         e.preventDefault()
@@ -119,7 +121,19 @@ const Diary = props => {
                 props.history.push('/dashboard')
             })
             .catch(error => {
-                alert(error);
+                store.addNotification({
+                    title: "Error!",
+                    message: error.response.data.message,
+                    type: "danger",
+                    insert: "top",
+                    container: "top-right",
+                    animationIn: ["animated", "fadeIn"],
+                    animationOut: ["animated", "fadeOut"],
+                    dismiss: {
+                        duration: 3000,
+                        onScreen: true
+                    }                
+                });
             }); 
         } else {
             const payload = {
@@ -132,7 +146,19 @@ const Diary = props => {
                 props.history.push('/dashboard')
             })
             .catch(error => {
-                alert(error);
+                store.addNotification({
+                    title: "Error!",
+                    message: error.response.data.message,
+                    type: "danger",
+                    insert: "top",
+                    container: "top-right",
+                    animationIn: ["animated", "fadeIn"],
+                    animationOut: ["animated", "fadeOut"],
+                    dismiss: {
+                        duration: 3000,
+                        onScreen: true
+                    }                
+                });
             }); 
         }              
     }
@@ -166,13 +192,14 @@ const Diary = props => {
                     {
                         uploading ? (
                             <div style={{textAlign: 'center', marginTop: '20px'}}>
-                                <CircularProgress style={{color: '#38b6ff'}} />
+                                <CircularProgress color='primary' style={{color: '#38b6ff'}} />
                                 <h5>Uploading...</h5>
                             </div>
                         ) : (
                             <div>
                                 <h2>Upload your picture</h2>                   
                                 <input type="file" name="Upload" onChange={onChange} />
+                                <div style={{fontSize: '0.7rem'}}><em>(Note: Only jpeg, jpg, png and gif file types are accepted)</em></div>
                                 <section style={{marginTop: '20px'}}>
                                     <Button variant="contained" style={{backgroundColor: '#38b6ff', fontSize: '1.2rem'}} onClick={onUpload} color="primary">
                                         Save
