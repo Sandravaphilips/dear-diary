@@ -4,6 +4,7 @@ import { store } from 'react-notifications-component';
 import withAuth from '../axios';
 import { DiaryStyle } from './style';
 import Navigation from './Navigation.';
+import { ExpandMore, ExpandLess } from '@material-ui/icons';
 
 function getModalStyle() {
     return {
@@ -33,6 +34,7 @@ const Diary = props => {
     const [isLoading, setIsLoading] = useState(true);
     const [uploading, setUploading] = useState(false);
     const [results, setResults] = useState(false);
+    const [expand, setExpand] = useState(false)
     const classes = useStyles();
     const [modalStyle] = useState(getModalStyle);
     
@@ -61,6 +63,10 @@ const Diary = props => {
     const handleClose = () => {
         setOpen(false);
     };
+
+    const handleClick = () => {
+        setExpand(!expand)
+    }
 
     const onChange = e => {
         const file = e.target.files[0];
@@ -181,6 +187,12 @@ const Diary = props => {
                     <Button className='diary-button' onClick={onHandleSubmit} variant="contained" color="primary">
                         Done
                     </Button>
+                </section>
+            </div>
+            <div>
+                <section>
+                    <h3>Gallery</h3>
+                    <span onClick={handleClick}>{ expand ? <ExpandLess /> : <ExpandMore />}</span>
                 </section>
             </div>
             <footer>
