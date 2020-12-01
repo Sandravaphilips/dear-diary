@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Modal, TextareaAutosize, makeStyles, CircularProgress } from '@material-ui/core';
+import { Button, Modal, TextareaAutosize, makeStyles, CircularProgress, Collapse } from '@material-ui/core';
 import { store } from 'react-notifications-component';
 import withAuth from '../axios';
 import { DiaryStyle } from './style';
@@ -27,6 +27,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Diary = props => {
     const [photo, setPhoto] = useState(null);
+    const [photos, setPhotos] = useState([]);
     const [open, setOpen] = useState(false);
     const [diary, setDiary] = useState({
         diaryText: ''
@@ -34,7 +35,7 @@ const Diary = props => {
     const [isLoading, setIsLoading] = useState(true);
     const [uploading, setUploading] = useState(false);
     const [results, setResults] = useState(false);
-    const [expand, setExpand] = useState(false)
+    const [expand, setExpand] = useState(false);
     const classes = useStyles();
     const [modalStyle] = useState(getModalStyle);
     
@@ -194,6 +195,11 @@ const Diary = props => {
                     <h3>Gallery</h3>
                     <span onClick={handleClick}>{ expand ? <ExpandLess /> : <ExpandMore />}</span>
                 </section>
+                <Collapse in={expand} timeout="auto">
+                    {
+                        photos ? <p>You have no photos for this date!</p> : null
+                    }
+                </Collapse>
             </div>
             <footer>
                 <p>&copy; Dear Diary</p>
