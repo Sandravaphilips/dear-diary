@@ -164,9 +164,11 @@ const Diary = props => {
     }
     
     if(isLoading) return (
-    <div className='loading'>
-        <Navigation />
-        <CircularProgress style={{color: '#38b6ff', marginTop: '30vh'}} /></div>) 
+        <div className='loading'>
+            <Navigation />
+            <CircularProgress style={{color: '#38b6ff', marginTop: '30vh'}} />
+        </div>
+    ) 
     return(
         <DiaryStyle>
             <Navigation />
