@@ -23,8 +23,9 @@ router.post('/diary', validateBody, async(req, res) => {
 router.post('/gallery', validatePicture, validatePictureFormat, validateImageSize, async(req, res) => {
     try {
         const file = req.files.photo;
+        const date = req.body.date;
         const image = await cloudinaryUploader(file.tempFilePath, "Images");
-        const newPicture = await db.addPicture({date: image.date.substring(0, 10), picture: image.url, userId: req.decodedToken.subject })
+        const newPicture = await db.addPicture({date: date, picture: image.url, userId: req.decodedToken.subject })
 
         res.status(201).json({ message: variables.pictureAdded, newPicture })
     }

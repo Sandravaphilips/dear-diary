@@ -408,6 +408,15 @@ export const DiaryStyle = styled.div`
         }
     }
 
+    .gallery-title {
+        flex-direction: row;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin: 20px 1.2em;
+        border-bottom: 1px solid grey;
+    }
+
     footer {
         position: relative;
         margin: auto;

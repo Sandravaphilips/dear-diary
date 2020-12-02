@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Modal, TextareaAutosize, makeStyles, CircularProgress } from '@material-ui/core';
+import { Button, Modal, TextareaAutosize, makeStyles, CircularProgress, Collapse, CardMedia, Grid } from '@material-ui/core';
 import { store } from 'react-notifications-component';
 import withAuth from '../axios';
 import { DiaryStyle } from './style';
 import Navigation from './Navigation.';
+import { ExpandMore, ExpandLess } from '@material-ui/icons';
 
 function getModalStyle() {
     return {
@@ -22,10 +23,19 @@ const useStyles = makeStyles((theme) => ({
         padding: theme.spacing(2, 4, 3),
         paddingLeft: '4rem'
     },
+    media: {
+        height: 240,
+        width: 200,
+    },
+    root: {
+        flexGrow: 1,
+        width: '100%'
+    }
 }));
 
 const Diary = props => {
     const [photo, setPhoto] = useState(null);
+    const [photos, setPhotos] = useState([]);
     const [open, setOpen] = useState(false);
     const [diary, setDiary] = useState({
         diaryText: ''
@@ -33,17 +43,19 @@ const Diary = props => {
     const [isLoading, setIsLoading] = useState(true);
     const [uploading, setUploading] = useState(false);
     const [results, setResults] = useState(false);
+    const [expand, setExpand] = useState(false);
     const classes = useStyles();
     const [modalStyle] = useState(getModalStyle);
     
     const date = props.match.params.date;
 
     useEffect(() => {
-        withAuth().get(`https://my-dear-diary.herokuapp.com/api/diary/${date}`)
-        .then(({data}) => {
-            setDiary(data.diary)
+        Promise.all([withAuth().get(`https://my-dear-diary.herokuapp.com/api/diary/${date}`), withAuth().get(`https://my-dear-diary.herokuapp.com/api/gallery/${date}`)])
+        .then(([diaryResponse, galleryResponse]) => {
+            setDiary(diaryResponse.data.diary)
+            setPhotos(galleryResponse.data.pictures)
             setIsLoading(false)
-            if(data.diary) {
+            if(diaryResponse.data.diary) {
                 setResults(true)
             }
         })
@@ -62,6 +74,10 @@ const Diary = props => {
         setOpen(false);
     };
 
+    const handleClick = () => {
+        setExpand(!expand)
+    }
+
     const onChange = e => {
         const file = e.target.files[0];
         setPhoto(file);
@@ -72,8 +88,10 @@ const Diary = props => {
         setUploading(true)
         let fd = new FormData();
         fd.append('photo', photo)
+        fd.append('date', date)
         withAuth('multipart/form-data').post('https://my-dear-diary.herokuapp.com/api/gallery', fd)
         .then(res => {
+            console.log(res.data)
             handleClose()
             store.addNotification({
                 title: "Success!",
@@ -105,10 +123,9 @@ const Diary = props => {
                 }                
             });
             setUploading(false)
-        });
-        
-        
+        });        
     }
+
     const onHandleSubmit = e => {
         e.preventDefault()
         if(results) {
@@ -164,9 +181,11 @@ const Diary = props => {
     }
     
     if(isLoading) return (
-    <div className='loading'>
-        <Navigation />
-        <CircularProgress style={{color: '#38b6ff', marginTop: '30vh'}} /></div>) 
+        <div className='loading'>
+            <Navigation />
+            <CircularProgress style={{color: '#38b6ff', marginTop: '30vh'}} />
+        </div>
+    ) 
     return(
         <DiaryStyle>
             <Navigation />
@@ -180,6 +199,27 @@ const Diary = props => {
                         Done
                     </Button>
                 </section>
+            </div>
+            <div>
+                <section className='gallery-title'>
+                    <h3>Gallery</h3>
+                    <span onClick={handleClick}>{ expand ? <ExpandLess /> : <ExpandMore />}</span>
+                </section>
+                <Collapse in={expand} timeout="auto">
+                    {
+                        photos.length === 0 ? <p>You have no photos for this date!</p> : (
+                            <Grid container justify="center" spacing={2} className={classes.root}>
+                                {
+                                    photos.map(photo =>
+                                        <Grid key={photo.id} item>
+                                            <CardMedia className={classes.media} image={photo.picture} title={photo.date + photo.id} />
+                                        </Grid>
+                                    )
+                                }
+                            </Grid>
+                        )
+                    }
+                </Collapse>
             </div>
             <footer>
                 <p>&copy; Dear Diary</p>
