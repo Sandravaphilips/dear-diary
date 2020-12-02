@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Modal, TextareaAutosize, makeStyles, CircularProgress, Collapse } from '@material-ui/core';
+import { Button, Modal, TextareaAutosize, makeStyles, CircularProgress, Collapse, CardMedia, Grid } from '@material-ui/core';
 import { store } from 'react-notifications-component';
 import withAuth from '../axios';
 import { DiaryStyle } from './style';
@@ -23,6 +23,14 @@ const useStyles = makeStyles((theme) => ({
         padding: theme.spacing(2, 4, 3),
         paddingLeft: '4rem'
     },
+    media: {
+        height: 240,
+        width: 200,
+    },
+    root: {
+        flexGrow: 1,
+        width: '100%'
+    }
 }));
 
 const Diary = props => {
@@ -42,11 +50,10 @@ const Diary = props => {
     const date = props.match.params.date;
 
     useEffect(() => {
-        Promise.all([withAuth().get(`https://my-dear-diary.herokuapp.com/api/diary/${date}`), withAuth().get(`https://my-dear-diary.herokuapp.com/api/gallery/${date}`)])
+        Promise.all([withAuth().get(`https://my-dear-diary.herokuapp.com/api/diary/${date}`), withAuth().get(`http://localhost:5000/api/gallery/${date}`)])
         .then(([diaryResponse, galleryResponse]) => {
             setDiary(diaryResponse.data.diary)
-            setPhotos(galleryResponse.data)
-            console.log(galleryResponse)
+            setPhotos(galleryResponse.data.pictures)
             setIsLoading(false)
             if(diaryResponse.data.diary) {
                 setResults(true)
@@ -81,7 +88,8 @@ const Diary = props => {
         setUploading(true)
         let fd = new FormData();
         fd.append('photo', photo)
-        withAuth('multipart/form-data').post('https://my-dear-diary.herokuapp.com/api/gallery', fd)
+        fd.append('date', date)
+        withAuth('multipart/form-data').post('http://localhost:5000/api/gallery', fd)
         .then(res => {
             console.log(res.data)
             handleClose()
@@ -193,13 +201,23 @@ const Diary = props => {
                 </section>
             </div>
             <div>
-                <section>
+                <section className='gallery-title'>
                     <h3>Gallery</h3>
                     <span onClick={handleClick}>{ expand ? <ExpandLess /> : <ExpandMore />}</span>
                 </section>
                 <Collapse in={expand} timeout="auto">
                     {
-                        photos ? <p>You have no photos for this date!</p> : null
+                        photos.length === 0 ? <p>You have no photos for this date!</p> : (
+                            <Grid container justify="center" spacing={2} className={classes.root}>
+                                {
+                                    photos.map(photo =>
+                                        <Grid key={photo.id} item>
+                                            <CardMedia className={classes.media} image={photo.picture} title={photo.date + photo.id} />
+                                        </Grid>
+                                    )
+                                }
+                            </Grid>
+                        )
                     }
                 </Collapse>
             </div>
