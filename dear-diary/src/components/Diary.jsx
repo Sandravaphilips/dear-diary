@@ -42,11 +42,13 @@ const Diary = props => {
     const date = props.match.params.date;
 
     useEffect(() => {
-        withAuth().get(`https://my-dear-diary.herokuapp.com/api/diary/${date}`)
-        .then(({data}) => {
-            setDiary(data.diary)
+        Promise.all([withAuth().get(`https://my-dear-diary.herokuapp.com/api/diary/${date}`), withAuth().get(`https://my-dear-diary.herokuapp.com/api/gallery/${date}`)])
+        .then(([diaryResponse, galleryResponse]) => {
+            setDiary(diaryResponse.data.diary)
+            setPhotos(galleryResponse.data)
+            console.log(galleryResponse)
             setIsLoading(false)
-            if(data.diary) {
+            if(diaryResponse.data.diary) {
                 setResults(true)
             }
         })
@@ -81,6 +83,7 @@ const Diary = props => {
         fd.append('photo', photo)
         withAuth('multipart/form-data').post('https://my-dear-diary.herokuapp.com/api/gallery', fd)
         .then(res => {
+            console.log(res.data)
             handleClose()
             store.addNotification({
                 title: "Success!",
@@ -112,10 +115,9 @@ const Diary = props => {
                 }                
             });
             setUploading(false)
-        });
-        
-        
+        });        
     }
+
     const onHandleSubmit = e => {
         e.preventDefault()
         if(results) {
