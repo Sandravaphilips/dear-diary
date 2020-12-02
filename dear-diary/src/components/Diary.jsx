@@ -50,7 +50,7 @@ const Diary = props => {
     const date = props.match.params.date;
 
     useEffect(() => {
-        Promise.all([withAuth().get(`https://my-dear-diary.herokuapp.com/api/diary/${date}`), withAuth().get(`http://localhost:5000/api/gallery/${date}`)])
+        Promise.all([withAuth().get(`https://my-dear-diary.herokuapp.com/api/diary/${date}`), withAuth().get(`https://my-dear-diary.herokuapp.com/api/gallery/${date}`)])
         .then(([diaryResponse, galleryResponse]) => {
             setDiary(diaryResponse.data.diary)
             setPhotos(galleryResponse.data.pictures)
@@ -89,7 +89,7 @@ const Diary = props => {
         let fd = new FormData();
         fd.append('photo', photo)
         fd.append('date', date)
-        withAuth('multipart/form-data').post('http://localhost:5000/api/gallery', fd)
+        withAuth('multipart/form-data').post('https://my-dear-diary.herokuapp.com/api/gallery', fd)
         .then(res => {
             console.log(res.data)
             handleClose()
