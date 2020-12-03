@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Modal, TextareaAutosize, makeStyles, CircularProgress, Collapse, CardMedia, Grid } from '@material-ui/core';
+import { Button, Modal, TextareaAutosize, Card, makeStyles, CircularProgress, Collapse, CardMedia, Grid, CardActions } from '@material-ui/core';
 import { store } from 'react-notifications-component';
 import withAuth from '../axios';
 import { DiaryStyle } from './style';
@@ -27,6 +27,9 @@ const useStyles = makeStyles((theme) => ({
         height: 240,
         width: 200,
     },
+    modalMedia: {
+        height: 240
+    },
     root: {
         flexGrow: 1,
         width: '100%'
@@ -35,8 +38,10 @@ const useStyles = makeStyles((theme) => ({
 
 const Diary = props => {
     const [photo, setPhoto] = useState(null);
+    const [picture, setPicture] = useState({});
     const [photos, setPhotos] = useState([]);
     const [open, setOpen] = useState(false);
+    const [pictureOpen, setPictureOpen] = useState(false);
     const [diary, setDiary] = useState({
         diaryText: ''
     });
@@ -70,8 +75,17 @@ const Diary = props => {
         setOpen(true);
     };
 
+    const handlePictureOpen = picture => {
+        setPictureOpen(true)
+        setPicture(picture)
+    }
+
     const handleClose = () => {
         setOpen(false);
+    };
+
+    const handlePictureClose = () => {
+        setPictureOpen(false);
     };
 
     const handleClick = () => {
@@ -178,6 +192,44 @@ const Diary = props => {
                 });
             }); 
         }              
+    };
+
+    const onPictureDelete = (e, id) => {
+        e.preventDefault()
+        withAuth().delete(`https://my-dear-diary.herokuapp.com/api/gallery/${id}`)
+        .then(res => {
+            const newPhotos = photos.filter(photo => photo !== picture)
+            setPhotos(newPhotos)
+            store.addNotification({
+                title: "Success!",
+                message: res.data.message,
+                type: "success",
+                insert: "top",
+                container: "top-right",
+                animationIn: ["animated", "fadeIn"],
+                animationOut: ["animated", "fadeOut"],
+                dismiss: {
+                    duration: 3000,
+                    onScreen: true
+                }               
+            });
+            handlePictureClose()
+        })
+        .catch(err => {
+            store.addNotification({
+                title: "Error!",
+                message: err.response.data.message,
+                type: "danger",
+                insert: "top",
+                container: "top-right",
+                animationIn: ["animated", "fadeIn"],
+                animationOut: ["animated", "fadeOut"],
+                dismiss: {
+                    duration: 3000,
+                    onScreen: true
+                }                
+            });
+        })
     }
     
     if(isLoading) return (
@@ -212,7 +264,7 @@ const Diary = props => {
                                 {
                                     photos.map(photo =>
                                         <Grid key={photo.id} item>
-                                            <CardMedia className={classes.media} image={photo.picture} title={photo.date + photo.id} />
+                                            <CardMedia onClick={() => handlePictureOpen(photo)} className={classes.media} image={photo.picture} title={photo.date + photo.id} />
                                         </Grid>
                                     )
                                 }
@@ -252,6 +304,22 @@ const Diary = props => {
                         )
                     }
                 </div>
+            </Modal>
+            <Modal
+                open={pictureOpen}
+                onClose={handlePictureClose}
+            >
+                <Card style={modalStyle} className={classes.paper}>
+                    <CardMedia className={classes.modalMedia} image={picture.picture} title={picture.date + picture.id} />
+                    <CardActions>
+                        <Button onClick={e => onPictureDelete(e, picture.id)} variant='contained' color="primary">
+                            Delete
+                        </Button>
+                        <Button onClick={handlePictureClose} variant='contained' color="primary">
+                            Cancel
+                        </Button>
+                    </CardActions>
+                </Card>
             </Modal>
         </DiaryStyle>
     )
